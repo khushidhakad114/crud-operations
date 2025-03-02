@@ -110,4 +110,26 @@ const logOut = async (req, res) => {
   }
 };
 
-module.exports = { createUser, loginUser, logOut, myProfile, updateProfile };
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const userdata = await user.findByIdAndDelete(id);
+    if (!userdata) {
+      throw new Error("User not found");
+    }
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Error deleting user", details: err.message });
+  }
+};
+
+module.exports = {
+  createUser,
+  loginUser,
+  logOut,
+  myProfile,
+  updateProfile,
+  deleteUser,
+};
